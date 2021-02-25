@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EfQueryDemo.Infrastructure.Database;
 using EfQueryDemo.Models;
+using EfQueryDemo.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,9 @@ namespace EfQueryDemo.Controllers
         [HttpGet("tickets-count")]
         public async Task<IActionResult> TicketsCountAsync()
         {
-            return Ok(await _context.Tickets.CountAsync());
+            return Ok(
+                await new QueryResponse<int>(_context)
+                    .ExecuteAsync(c => c.Tickets.CountAsync()));
         }
 
         [HttpGet("users")]
