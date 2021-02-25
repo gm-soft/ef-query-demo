@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Utils.Exceptions;
 
-namespace Web.Middlewares.Error
+namespace EfQueryDemo.Infrastructure.Middlewares.Error
 {
     public class ExceptionHandlerMiddleware
     {
@@ -17,11 +15,6 @@ namespace Web.Middlewares.Error
         {
             { typeof(UnauthorizedAccessException), StatusCodes.Status401Unauthorized },
             { typeof(AuthenticationException), StatusCodes.Status401Unauthorized },
-            { typeof(NoPermissionsException), StatusCodes.Status403Forbidden },
-            { typeof(ResourceNotFoundException), StatusCodes.Status404NotFound },
-            { typeof(BadRequestException), StatusCodes.Status400BadRequest },
-            { typeof(EntityInvalidException), StatusCodes.Status400BadRequest },
-            { typeof(InputValidationException), StatusCodes.Status422UnprocessableEntity },
             { typeof(InvalidOperationException), StatusCodes.Status400BadRequest },
             { typeof(DbUpdateConcurrencyException), StatusCodes.Status409Conflict }
         };

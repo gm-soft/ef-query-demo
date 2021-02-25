@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Web.Middlewares
+namespace EfQueryDemo.Infrastructure.Middlewares
 {
     public class LoggingMiddleware
     {

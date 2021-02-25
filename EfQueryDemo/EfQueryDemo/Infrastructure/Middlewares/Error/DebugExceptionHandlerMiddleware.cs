@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Web.Middlewares.Error
+namespace EfQueryDemo.Infrastructure.Middlewares.Error
 {
     public class DebugExceptionHandlerMiddleware : ExceptionHandlerMiddleware
     {
@@ -19,7 +19,7 @@ namespace Web.Middlewares.Error
                 statusCode: statusCode).WriteAsync();
         }
 
-        private class DebugErrorDetails : ErrorDetails
+        private record DebugErrorDetails : ErrorDetails
         {
             public DebugErrorDetails(int status, string message, Exception exception)
                 : base(status, message)

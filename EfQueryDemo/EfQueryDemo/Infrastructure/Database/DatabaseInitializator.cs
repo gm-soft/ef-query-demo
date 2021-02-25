@@ -48,7 +48,7 @@ namespace EfQueryDemo.Infrastructure.Database
 
         private async Task ExecuteAsync()
         {
-            await AddUsersAsync();
+            
         }
     }
 }

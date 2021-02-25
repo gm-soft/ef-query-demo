@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Web.Middlewares.Error
+namespace EfQueryDemo.Infrastructure.Middlewares.Error
 {
-    public class ErrorDetails
+    public record ErrorDetails
     {
         private const string DefaultServerErrorMessage = "Internal Server Error";
 

@@ -1,5 +1,7 @@
+using System;
 using EfQueryDemo.Infrastructure.Database;
 using EfQueryDemo.Infrastructure.Logging;
+using EfQueryDemo.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +15,15 @@ namespace EfQueryDemo
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,17 +42,18 @@ namespace EfQueryDemo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DatabaseInitializator database)
+        public void Configure(IApplicationBuilder app, DatabaseInitializator database)
         {
             database
                 .Migrate()
                 .SeedOrIgnore();
 
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                
             }
+
+            app.UseErrorHandler(Environment).UseLoggingMiddleware();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EfQueryDemo v1"));

@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Utils.Serialization;
 
-namespace Web.Middlewares.Error
+namespace EfQueryDemo.Infrastructure.Middlewares.Error
 {
     internal class JsonErrorResponse<T>
     {
@@ -22,7 +22,7 @@ namespace Web.Middlewares.Error
             _context.Response.ContentType = "application/json";
             _context.Response.StatusCode = _statusCode;
 
-            return _context.Response.WriteAsync(_error.ToSnakeCase());
+            return _context.Response.WriteAsync(JsonSerializer.Serialize(_error));
         }
     }
 }

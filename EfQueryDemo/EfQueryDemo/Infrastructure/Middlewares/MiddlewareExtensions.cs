@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using EfQueryDemo.Infrastructure.Middlewares.Error;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Web.Middlewares.Error;
 
-namespace Web.Middlewares
+namespace EfQueryDemo.Infrastructure.Middlewares
 {
     public static class MiddlewareExtensions
     {
         public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            return env.IsDevelopment() || env.IsEnvironment("Demo")
-                ? app.UseMiddleware<DebugExceptionHandlerMiddleware>()
-                : app.UseMiddleware<ExceptionHandlerMiddleware>();
+            return app.UseMiddleware<DebugExceptionHandlerMiddleware>();
         }
 
         public static IApplicationBuilder UseLoggingMiddleware(this IApplicationBuilder app)

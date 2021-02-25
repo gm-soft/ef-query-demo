@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Web.Middlewares
+namespace EfQueryDemo.Infrastructure.Middlewares
 {
     public class DefaultNotFoundPageMiddleware
     {
