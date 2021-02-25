@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EfQueryDemo.Infrastructure.Database.Config
 {
-    public class UserRequestConfig : IEntityTypeConfiguration<UserRequest>
+    public class TicketsConfig : IEntityTypeConfiguration<Ticket>
     {
-        public void Configure(EntityTypeBuilder<UserRequest> builder)
+        public void Configure(EntityTypeBuilder<Ticket> builder)
         {
-            builder.ToTable("UserRequests");
+            builder.ToTable("Tickets");
 
             builder
                 .HasOne(x => x.Author)

@@ -1,12 +1,12 @@
 ﻿namespace EfQueryDemo.Models
 {
-    public class UserRequest
+    public class Ticket
     {
-        protected UserRequest()
+        protected Ticket()
         {
         }
 
-        public UserRequest(User author, User executor)
+        public Ticket(User author, User executor)
         {
             AuthorId = author.Id;
             ExecutorId = executor.Id;

@@ -19,6 +19,6 @@ namespace EfQueryDemo.Models
         [Required]
         public string Email { get; protected set; }
 
-        public virtual ICollection<UserRequest> RequestsToExecute { get; protected set; }
+        public virtual ICollection<Ticket> RequestsToExecute { get; protected set; }
     }
 }
