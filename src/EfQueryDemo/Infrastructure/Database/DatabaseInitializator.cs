@@ -49,13 +49,10 @@ namespace EfQueryDemo.Infrastructure.Database
 
         private async Task ExecuteAsync()
         {
-            _context.Users.RemoveRange(
-                await _context.Users.ToArrayAsync());
-
-            _context.Tickets.RemoveRange(
-                await _context.Tickets.ToArrayAsync());
-
-            await _context.SaveChangesAsync();
+            if (await _context.Tickets.AnyAsync())
+            {
+                return;
+            }
 
             const int usersCount = 1000;
             const int ticketsForUserMin = 10;

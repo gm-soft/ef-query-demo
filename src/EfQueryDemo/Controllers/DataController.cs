@@ -24,6 +24,12 @@ namespace EfQueryDemo.Controllers
             return await _context.Tickets.AsNoTracking().ToArrayAsync();
         }
 
+        [HttpGet("tickets-count")]
+        public async Task<IActionResult> TicketsCountAsync()
+        {
+            return Ok(await _context.Tickets.CountAsync());
+        }
+
         [HttpGet("users")]
         public async Task<IReadOnlyCollection<User>> UsersAsync()
         {
