@@ -20,7 +20,7 @@ namespace EfQueryDemo
             var builder = new DbContextOptionsBuilder<DatabaseContext>();
             var connectionString = configuration.GetConnectionString("Db");
             System.Console.WriteLine(connectionString);
-            builder.UseNpgsql(connectionString);
+            builder.UseSqlServer(connectionString);
 
             return new DatabaseContext(builder.Options);
         }

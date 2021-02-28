@@ -7,15 +7,13 @@ networks:
 services:
   database:
     container_name: eqd-database
-    image: postgres:13
+    image: mcr.microsoft.com/mssql/server:2019-latest
     restart: always
-    environment:
-      POSTGRES_USER: pi
-      POSTGRES_PASSWORD: Str0ngPass!
-      POSTGRES_DB: db
-      POSTGRES_ADMIN_PASSWORD: Str0ngPass!
     ports:
-      - 5432:5432
+      - 21433:1433
+    environment:
+      SA_PASSWORD: "Str0ngPass!"
+      ACCEPT_EULA: "Y"
     networks:
       - eqd-network
 
@@ -34,7 +32,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: https://+:5001
       ASPNETCORE_HTTPS_PORT: 5001
-      ConnectionStrings:DefaultConnection: Host=database;Database=db;User Id=pi;Password=Str0ngPass!
+      ConnectionStrings:DefaultConnection: Server=database; Database=ef-demo; User Id=sa; Password=Str0ngPass!;
     ports:
       - 5001:5001
     networks:

@@ -13,12 +13,14 @@ namespace EfQueryDemo.Infrastructure.Database.Config
             builder
                 .HasOne(x => x.Author)
                 .WithMany()
-                .HasForeignKey(x => x.AuthorId);
+                .HasForeignKey(x => x.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(x => x.Executor)
                 .WithMany(x => x.RequestsToExecute)
-                .HasForeignKey(x => x.ExecutorId);
+                .HasForeignKey(x => x.ExecutorId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

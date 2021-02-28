@@ -42,7 +42,7 @@ namespace EfQueryDemo
 
             services.AddDbContext<DatabaseContext>(
                 options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("Db")));
+                    options.UseSqlServer(Configuration.GetConnectionString("Db")));
 
             services
                 .AddTransient<DatabaseInitializator>();
