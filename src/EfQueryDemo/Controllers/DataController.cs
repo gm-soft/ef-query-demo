@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EfQueryDemo.Infrastructure.Database;
 using EfQueryDemo.Models;
@@ -39,6 +40,32 @@ namespace EfQueryDemo.Controllers
             return Ok(
                 await new QueryResponse<User[]>(_context)
                     .ExecuteAsync(c => c.Users.AsNoTracking().ToArrayAsync()));
+        }
+
+        [HttpGet("users/with-tickets/include/dto")]
+        public async Task<IActionResult> UsersWithTicketsWhereExecutorDtoAsync([FromQuery] int take = 100)
+        {
+            return Ok(
+                await new QueryResponse<UserDto[]>(_context)
+                    .ExecuteAsync(async c => (await c.Users
+                        .Include(x => x.RequestsToExecute)
+                        .Take(take)
+                        .AsNoTracking()
+                        .ToArrayAsync())
+                        .Select(x => new UserDto(x))
+                        .ToArray()));
+        }
+
+        [HttpGet("users/with-tickets/include")]
+        public async Task<IActionResult> UsersWithTicketsWhereExecutorAsync([FromQuery] int take = 100)
+        {
+            return Ok(
+                await new QueryResponse<User[]>(_context)
+                    .ExecuteAsync(c => c.Users
+                        .Include(x => x.RequestsToExecute)
+                        .Take(take)
+                        .AsNoTracking()
+                        .ToArrayAsync()));
         }
     }
 }

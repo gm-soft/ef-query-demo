@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using EfQueryDemo.Infrastructure.Database;
 using EfQueryDemo.Infrastructure.Logging;
 using EfQueryDemo.Infrastructure.Middlewares;
@@ -30,7 +31,10 @@ namespace EfQueryDemo
         {
             Log.Logger = new AppLogger(Configuration).Build();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ef Query Demo", Version = "v1" });

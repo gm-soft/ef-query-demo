@@ -24,10 +24,10 @@ namespace EfQueryDemo.Infrastructure.Middlewares.Error
             public DebugErrorDetails(int status, string message, Exception exception)
                 : base(status, message)
             {
-                Exception = exception;
+                Exception = new ExceptionDto(exception);
             }
 
-            public Exception Exception { get; }
+            public ExceptionDto Exception { get; }
         }
     }
 }
