@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfQueryDemo", "EfQueryDemo\EfQueryDemo.csproj", "{1D6FE586-9682-4681-8642-2CF925CD13DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfQueryDemo", "EfQueryDemo\EfQueryDemo.csproj", "{1D6FE586-9682-4681-8642-2CF925CD13DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfQueryDemo.Tests", "EfQueryDemo.Tests\EfQueryDemo.Tests.csproj", "{31C644D9-1D1A-4A1F-96D0-57F6A10A9F91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1D6FE586-9682-4681-8642-2CF925CD13DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D6FE586-9682-4681-8642-2CF925CD13DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D6FE586-9682-4681-8642-2CF925CD13DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C644D9-1D1A-4A1F-96D0-57F6A10A9F91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31C644D9-1D1A-4A1F-96D0-57F6A10A9F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C644D9-1D1A-4A1F-96D0-57F6A10A9F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31C644D9-1D1A-4A1F-96D0-57F6A10A9F91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
