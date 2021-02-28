@@ -34,9 +34,11 @@ namespace EfQueryDemo.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<IReadOnlyCollection<User>> UsersAsync()
+        public async Task<IActionResult> UsersAsync()
         {
-            return await _context.Users.AsNoTracking().ToArrayAsync();
+            return Ok(
+                await new QueryResponse<User[]>(_context)
+                    .ExecuteAsync(c => c.Users.AsNoTracking().ToArrayAsync()));
         }
     }
 }
