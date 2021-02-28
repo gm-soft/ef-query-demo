@@ -32,7 +32,7 @@ namespace EfQueryDemo.Services
 
                 stopWatch.Stop();
                 Elapsed = stopWatch.ElapsedMilliseconds;
-                Queries = _context.Queries;
+                Queries = _context.QueriesLog;
 
                 return this;
             }

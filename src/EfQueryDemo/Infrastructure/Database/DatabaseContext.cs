@@ -9,7 +9,7 @@ namespace EfQueryDemo.Infrastructure.Database
 {
     public class DatabaseContext : DbContext
     {
-        public List<string> Queries { get; } = new List<string>();
+        public List<string> QueriesLog { get; } = new List<string>();
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -20,7 +20,7 @@ namespace EfQueryDemo.Infrastructure.Database
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.LogTo(x => Queries.Add(new SqlCommand(x).ToString()), new List<EventId>
+            optionsBuilder.LogTo(x => QueriesLog.Add(new SqlCommand(x).ToString()), new List<EventId>
             {
                 RelationalEventId.CommandExecuted
             });

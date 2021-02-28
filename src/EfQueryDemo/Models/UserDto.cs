@@ -23,6 +23,6 @@ namespace EfQueryDemo.Models
 
         public string Email { get; init; }
 
-        public IReadOnlyCollection<TicketDto> RequestsToExecute { get; init; }
+        public IEnumerable<TicketDto> RequestsToExecute { get; init; }
     }
 }

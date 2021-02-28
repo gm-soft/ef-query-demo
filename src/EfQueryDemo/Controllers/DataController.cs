@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EfQueryDemo.Infrastructure.Database;
@@ -54,6 +55,33 @@ namespace EfQueryDemo.Controllers
                         .ToArrayAsync())
                         .Select(x => new UserDto(x))
                         .ToArray()));
+        }
+
+        [HttpGet("users/with-tickets/join/dto")]
+        public async Task<IActionResult> UsersWithTicketsWhereExecutorDtoJoinAsync([FromQuery] int take = 100)
+        {
+            var query = from u in _context.Users
+                         join t in _context.Tickets
+                    on u.Id equals t.ExecutorId into grouping
+                // from ts in grouping.DefaultIfEmpty()
+                select new UserDto
+                         {
+                             Id = u.Id,
+                             Email = u.Email,
+                             RequestsToExecute = grouping.Select(x => new TicketDto
+                             {
+                                 Id = x.Id,
+                                 ExecutorId = x.ExecutorId,
+                                 AuthorId = x.AuthorId
+                             })
+                         };
+
+            return Ok(
+                await new QueryResponse<UserDto[]>(_context)
+                    .ExecuteAsync(async c => await query
+                            .Take(take)
+                            .AsNoTracking()
+                            .ToArrayAsync()));
         }
 
         [HttpGet("users/with-tickets/include")]
