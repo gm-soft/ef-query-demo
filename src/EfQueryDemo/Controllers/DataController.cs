@@ -60,25 +60,44 @@ namespace EfQueryDemo.Controllers
         [HttpGet("users/with-tickets/join/dto")]
         public async Task<IActionResult> UsersWithTicketsWhereExecutorDtoJoinAsync([FromQuery] int take = 100)
         {
-            var query = from u in _context.Users
-                         join t in _context.Tickets
-                    on u.Id equals t.ExecutorId into grouping
-                // from ts in grouping.DefaultIfEmpty()
-                select new UserDto
-                         {
-                             Id = u.Id,
-                             Email = u.Email,
-                             RequestsToExecute = grouping.Select(x => new TicketDto
-                             {
-                                 Id = x.Id,
-                                 ExecutorId = x.ExecutorId,
-                                 AuthorId = x.AuthorId
-                             })
-                         };
+            var join = (from u in _context.Users
+                    join t in _context.Tickets
+                        on u.Id equals t.ExecutorId
+                    select new {u, t})
+                    .GroupBy(x => x.u)
+                    .Select(x => new UserDto
+                    {
+                        Id = x.Key.Id,
+                        Email = x.Key.Email,
+                        RequestsToExecute = x.Select(t => new TicketDto
+                        {
+                            Id = t.t.Id,
+                            ExecutorId = t.t.ExecutorId,
+                            AuthorId = t.t.AuthorId
+                        })
+                    });
+
+            var groupJoin = _context.Users
+                .GroupJoin(
+                    _context.Tickets,
+                    u => u.Id,
+                    t => t.ExecutorId,
+                    (u, t) => new { User = u, Tickets = t })
+                .Select(x => new UserDto
+                {
+                    Id = x.User.Id,
+                    Email = x.User.Email,
+                    RequestsToExecute = x.Tickets.Select(t => new TicketDto
+                    {
+                        Id = t.Id,
+                        ExecutorId = t.ExecutorId,
+                        AuthorId = t.AuthorId
+                    })
+                });
 
             return Ok(
                 await new QueryResponse<UserDto[]>(_context)
-                    .ExecuteAsync(async c => await query
+                    .ExecuteAsync(async c => await join
                             .Take(take)
                             .AsNoTracking()
                             .ToArrayAsync()));
