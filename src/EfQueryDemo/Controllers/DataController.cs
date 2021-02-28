@@ -28,91 +28,59 @@ namespace EfQueryDemo.Controllers
         }
 
         [HttpGet("tickets-count")]
-        public async Task<IActionResult> TicketsCountAsync()
+        public async Task<QResponse> TicketsCountAsync()
         {
-            return Ok(
-                await new QueryResponse<int>(_context)
-                    .ExecuteAsync(c => c.Tickets.CountAsync()));
+            return await new QueryResponse<int>(_context)
+                .ExecuteAsync(c => c.Tickets.CountAsync());
         }
 
         [HttpGet("users")]
-        public async Task<IActionResult> UsersAsync()
+        public async Task<QResponse> UsersAsync()
         {
-            return Ok(
-                await new QueryResponse<User[]>(_context)
-                    .ExecuteAsync(c => c.Users.AsNoTracking().ToArrayAsync()));
+            return await new QueryResponse<User[]>(_context)
+                .ExecuteAsync(c => c.Users.AsNoTracking().ToArrayAsync());
         }
 
         [HttpGet("users/with-tickets/include/dto")]
-        public async Task<IActionResult> UsersWithTicketsWhereExecutorDtoAsync([FromQuery] int take = 100)
+        public async Task<QResponse> UsersWithTicketsWhereExecutorDtoAsync([FromQuery] int take = 100)
         {
-            return Ok(
-                await new QueryResponse<UserDto[]>(_context)
-                    .ExecuteAsync(async c => (await c.Users
+            return await new QueryResponse<UserDto[]>(_context)
+                .ExecuteAsync(async c => (await c.Users
                         .Include(x => x.RequestsToExecute)
                         .Take(take)
                         .AsNoTracking()
                         .ToArrayAsync())
-                        .Select(x => new UserDto(x))
-                        .ToArray()));
+                    .Select(x => new UserDto(x))
+                    .ToArray());
         }
 
         [HttpGet("users/with-tickets/join/dto")]
-        public async Task<IActionResult> UsersWithTicketsWhereExecutorDtoJoinAsync([FromQuery] int take = 100)
+        public async Task<QResponse> UsersWithTicketsWhereExecutorDtoJoinAsync([FromQuery] int take = 100)
         {
-            var join = (from u in _context.Users
-                    join t in _context.Tickets
-                        on u.Id equals t.ExecutorId
-                    select new {u, t})
-                    .GroupBy(x => x.u)
-                    .Select(x => new UserDto
-                    {
-                        Id = x.Key.Id,
-                        Email = x.Key.Email,
-                        RequestsToExecute = x.Select(t => new TicketDto
-                        {
-                            Id = t.t.Id,
-                            ExecutorId = t.t.ExecutorId,
-                            AuthorId = t.t.AuthorId
-                        })
-                    });
+            var query = (
+                from user in _context.Users
+                join ticket in _context.Tickets
+                    on user.Id equals ticket.ExecutorId into grouping
+                from ticket in grouping.DefaultIfEmpty()
+                select new { user, ticket });
 
-            var groupJoin = _context.Users
-                .GroupJoin(
-                    _context.Tickets,
-                    u => u.Id,
-                    t => t.ExecutorId,
-                    (u, t) => new { User = u, Tickets = t })
-                .Select(x => new UserDto
-                {
-                    Id = x.User.Id,
-                    Email = x.User.Email,
-                    RequestsToExecute = x.Tickets.Select(t => new TicketDto
-                    {
-                        Id = t.Id,
-                        ExecutorId = t.ExecutorId,
-                        AuthorId = t.AuthorId
-                    })
-                });
 
-            return Ok(
-                await new QueryResponse<UserDto[]>(_context)
-                    .ExecuteAsync(async c => await join
-                            .Take(take)
-                            .AsNoTracking()
-                            .ToArrayAsync()));
+            return await new QueryResponse<object[]>(_context)
+                .ExecuteAsync(async c => await query
+                    .Take(take)
+                    .AsNoTracking()
+                    .ToArrayAsync());
         }
 
         [HttpGet("users/with-tickets/include")]
-        public async Task<IActionResult> UsersWithTicketsWhereExecutorAsync([FromQuery] int take = 100)
+        public async Task<QResponse> UsersWithTicketsWhereExecutorAsync([FromQuery] int take = 100)
         {
-            return Ok(
-                await new QueryResponse<User[]>(_context)
-                    .ExecuteAsync(c => c.Users
-                        .Include(x => x.RequestsToExecute)
-                        .Take(take)
-                        .AsNoTracking()
-                        .ToArrayAsync()));
+            return await new QueryResponse<User[]>(_context)
+                .ExecuteAsync(c => c.Users
+                    .Include(x => x.RequestsToExecute)
+                    .Take(take)
+                    .AsNoTracking()
+                    .ToArrayAsync());
         }
     }
 }
