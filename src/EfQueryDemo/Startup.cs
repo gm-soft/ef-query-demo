@@ -59,7 +59,11 @@ namespace EfQueryDemo
             app.UseErrorHandler(Environment).UseLoggingMiddleware();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EfQueryDemo v1"));
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EfQueryDemo v1");
+            });
 
             app.UseHttpsRedirection();
 
